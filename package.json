@@ -1,0 +1,17 @@
+{
+  "name": "data-analysis-mall",
+  "version": "1.0.0",
+  "description": "데이터 분석 서비스 자사몰",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=3000",
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
+  },
+  "devDependencies": {},
+  "keywords": ["data-analysis", "e-commerce", "webview"],
+  "author": "Data Analysis Company",
+  "license": "MIT"
+}

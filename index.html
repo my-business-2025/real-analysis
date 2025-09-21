@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분석의진수 - 데이터의 흐름을 따라</title>
+    <meta name="description" content="전문가들이 제공하는 최고 품질의 데이터 분석 서비스와 교육. 분석서비스, 분석강의, 도서, 분석컨설팅을 만나보세요.">
+    <meta name="keywords" content="데이터분석, 머신러닝, 빅데이터, 파이썬, 데이터사이언스, 온라인강의, 데이터컨설팅">
+    <meta name="author" content="분석의진수">
+    <meta property="og:title" content="분석의진수 - 데이터의 흐름을 따라">
+    <meta property="og:description" content="전문가들이 제공하는 최고 품질의 데이터 분석 서비스와 교육">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/3498db/ffffff?text=분석의진수">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#3498db">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzM0OThkYiIvPgo8cGF0aCBkPSJNOCAxMkwxNiA4TDI0IDEyTDE2IDE2TDggMTJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNOCAxOEwxNiAxNEwyNCAxOEwxNiAyMkw4IDE4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==">
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>분석의진수</h1>
+                    <p>데이터의 흐름을 따라</p>
+                </div>
+                <div class="header-actions">
+                    <div id="auth-buttons" class="auth-buttons">
+                        <button id="login-btn" class="login-btn">로그인</button>
+                        <button id="signup-btn" class="signup-btn">회원가입</button>
+                    </div>
+                    <div id="user-profile" class="user-profile" style="display: none;">
+                        <button id="user-profile-btn" class="user-profile-btn">
+                            <div class="user-avatar-small">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span id="user-name-display">사용자님</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <!-- 사용자 프로필 드롭다운 -->
+                        <div id="user-profile-dropdown" class="user-dropdown">
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name" id="user-display-name">사용자님</div>
+                                    <div class="user-email" id="user-display-email">user@example.com</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fas fa-user-cog"></i> 프로필 설정</a></li>
+                                <li><a href="#"><i class="fas fa-shopping-bag"></i> 주문 내역</a></li>
+                                <li><a href="#"><i class="fas fa-heart"></i> 관심 상품</a></li>
+                                <li><a href="#"><i class="fas fa-cog"></i> 설정</a></li>
+                                <li class="divider"></li>
+                                <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> 로그아웃</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 네비게이션 -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <span class="nav-subtitle">데이터의 삶을 위한 인사이트</span>
+                <ul class="nav-menu">
+                    <li><a href="#" class="nav-link active" data-category="home">HOME</a></li>
+                    <li><a href="#" class="nav-link" data-category="services">분석서비스</a></li>
+                    <li><a href="#" class="nav-link" data-category="courses">분석강의</a></li>
+                    <li><a href="#" class="nav-link" data-category="books">도서</a></li>
+                    <li><a href="#" class="nav-link" data-category="consulting">분석컨설팅</a></li>
+                </ul>
+                <div class="sort-dropdown">
+                    <select>
+                        <option>등록순</option>
+                        <option>인기순</option>
+                        <option>가격순</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main">
+        <div class="container">
+            <!-- HOME 페이지 -->
+            <div id="home" class="category-content active">
+                <div class="home-hero">
+                    <div class="hero-content">
+                        <h1 class="hero-title">데이터 분석의 <span class="highlight">진수</span>를 경험하세요</h1>
+                        <p class="hero-subtitle">전문가들이 제공하는 최고 품질의 데이터 분석 서비스와 교육을 만나보세요</p>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">1,000+</div>
+                                <div class="stat-label">수강생</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">기업 파트너</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">95%</div>
+                                <div class="stat-label">만족도</div>
+                            </div>
+                        </div>
+                        <div class="hero-actions">
+                            <button class="cta-btn primary" onclick="showCategory('courses')">강의 둘러보기</button>
+                            <button class="cta-btn secondary" onclick="showCategory('services')">서비스 문의</button>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="chart-animation">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 인기 카테고리 -->
+                <section class="popular-categories">
+                    <h2 class="section-title">인기 카테고리</h2>
+                    <div class="category-grid">
+                        <div class="category-card" onclick="showCategory('services')">
+                            <div class="category-icon">
+                                <i class="fas fa-analytics"></i>
+                            </div>
+                            <h3>분석서비스</h3>
+                            <p>실시간 데이터 분석부터 AI 예측 모델링까지</p>
+                            <span class="category-price">500,000원부터</span>
+                        </div>
+                        <div class="category-card" onclick="showCategory('courses')">
+                            <div class="category-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3>분석강의</h3>
+                            <p>초보자부터 전문가까지 체계적인 교육 과정</p>
+                            <span class="category-price">120,000원부터</span>
+                        </div>
+                        <div class="category-card" onclick="showCategory('books')">
+                            <div class="category-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3>도서</h3>
+                            <p>데이터 분석 전문가들의 실무 경험이 담긴 도서</p>
+                            <span class="category-price">15,000원부터</span>
+                        </div>
+                        <div class="category-card" onclick="showCategory('consulting')">
+                            <div class="category-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>분석컨설팅</h3>
+                            <p>기업 맞춤형 데이터 전략 수립 및 구현</p>
+                            <span class="category-price">1,500,000원부터</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 추천 상품 -->
+                <section class="featured-products">
+                    <h2 class="section-title">이달의 추천</h2>
+                    <div class="featured-grid">
+                        <div class="featured-item">
+                            <div class="featured-badge">BEST</div>
+                            <div class="featured-image">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>머신러닝 마스터 클래스</h3>
+                            <p>실무 케이스로 배우는 AI/ML</p>
+                            <div class="featured-price">
+                                <span class="original">300,000원</span>
+                                <span class="sale">250,000원</span>
+                            </div>
+                        </div>
+                        <div class="featured-item">
+                            <div class="featured-badge">NEW</div>
+                            <div class="featured-image">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>실시간 데이터 분석</h3>
+                            <p>비즈니스 인사이트 도출</p>
+                            <div class="featured-price">500,000원</div>
+                        </div>
+                        <div class="featured-item">
+                            <div class="featured-badge">HOT</div>
+                            <div class="featured-image">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3>빅데이터 파이프라인</h3>
+                            <p>대규모 데이터 처리 시스템</p>
+                            <div class="featured-price">180,000원</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 서비스 카테고리별 콘텐츠 -->
+            <div id="services" class="category-content">
+                <h2 class="category-title">데이터 분석 서비스</h2>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>실시간 데이터 분석</h3>
+                            <p>비즈니스 데이터를 실시간으로 분석하고 인사이트를 제공합니다.</p>
+                            <div class="product-price">500,000원</div>
+                            <button class="add-to-cart-btn" data-product="실시간 데이터 분석" data-price="500000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>데이터 마이닝 서비스</h3>
+                            <p>대용량 데이터에서 숨겨진 패턴을 발견합니다.</p>
+                            <div class="product-price">800,000원</div>
+                            <button class="add-to-cart-btn" data-product="데이터 마이닝 서비스" data-price="800000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>AI 예측 모델링</h3>
+                            <p>머신러닝을 활용한 예측 모델을 구축합니다.</p>
+                            <div class="product-price">1,200,000원</div>
+                            <button class="add-to-cart-btn" data-product="AI 예측 모델링" data-price="1200000">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="courses" class="category-content">
+                <h2 class="category-title">데이터 분석 강의</h2>
+                <div class="products-grid">
+                    <div class="product-card course-card">
+                        <div class="course-badge">베스트셀러</div>
+                        <div class="product-image course-image">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="product-info">
+                            <p>초보자를 위한</p>
+                            <h3>데이터 분석 기초 과정</h3>
+                            <p>Excel부터 Python까지, 데이터 분석의 모든 것을 배워보세요</p>
+                            <div class="product-price">120,000원</div>
+                            <button class="add-to-cart-btn" data-product="데이터 분석 기초 과정" data-price="120000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card course-card">
+                        <div class="course-badge sale">SALE</div>
+                        <div class="product-image course-image">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="product-info">
+                            <p>실무진을 위한</p>
+                            <h3>머신러닝 마스터 클래스</h3>
+                            <p>실제 비즈니스 케이스로 배우는 AI/ML 실무 강의</p>
+                            <div class="product-price">
+                                <span class="original-price">300,000원</span>
+                                <span class="sale-price">250,000원</span>
+                            </div>
+                            <button class="add-to-cart-btn" data-product="머신러닝 마스터 클래스" data-price="250000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card course-card">
+                        <div class="course-badge">온라인 LIVE</div>
+                        <div class="product-image course-image">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="product-info">
+                            <p>데이터 엔지니어를 위한</p>
+                            <h3>빅데이터 파이프라인 구축</h3>
+                            <p>AWS, Spark, Kafka를 활용한 대규모 데이터 처리</p>
+                            <div class="product-price">180,000원</div>
+                            <button class="add-to-cart-btn" data-product="빅데이터 파이프라인 구축" data-price="180000">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="books" class="category-content">
+                <h2 class="category-title">데이터 분석 도서</h2>
+                <p class="section-subtitle">"사건을 누르면 책에 대한 자세한 정보를 확인할 수 있습니다"</p>
+                <div class="products-grid books-grid">
+                    <div class="product-card book-card">
+                        <div class="product-image book-large">
+                            <div class="book-cover-large dark-pink">
+                                <div class="book-title-large">복잡실한 세상을 살아가는 나에게</div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>복잡실한 세상을 살아가는 나에게</h3>
+                            <p>현대 사회의 복잡한 데이터 환경에서 살아남는 법</p>
+                            <div class="product-price">18,000원</div>
+                            <button class="add-to-cart-btn" data-product="복잡실한 세상을 살아가는 나에게" data-price="18000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card book-card">
+                        <div class="product-image book-large">
+                            <div class="book-cover-large blue">
+                                <div class="book-title-large">보는 독서</div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>보는 독서</h3>
+                            <p>끝리는 대로 읽어서 나답게 사는 법을 배우는 독서법</p>
+                            <div class="product-price">16,000원</div>
+                            <button class="add-to-cart-btn" data-product="보는 독서" data-price="16000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card book-card">
+                        <div class="product-image book-large">
+                            <div class="book-cover-large yellow">
+                                <div class="book-title-large">꿈 따위는 없어도 됩니다</div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>꿈 따위는 없어도 됩니다</h3>
+                            <p>현실 뿌고 가벼워짐으로 오히려 열정과 꿈을 찾아가는 이야기</p>
+                            <div class="product-price">15,000원</div>
+                            <button class="add-to-cart-btn" data-product="꿈 따위는 없어도 됩니다" data-price="15000">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="consulting" class="category-content">
+                <h2 class="category-title">데이터 분석 컨설팅</h2>
+                <div class="products-grid">
+                    <div class="product-card consulting-card">
+                        <div class="product-image">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>기업 데이터 전략 컨설팅</h3>
+                            <p>기업의 데이터 활용 전략 수립 및 실행 지원</p>
+                            <div class="product-price">2,000,000원</div>
+                            <button class="add-to-cart-btn" data-product="기업 데이터 전략 컨설팅" data-price="2000000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card consulting-card">
+                        <div class="product-image">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>데이터 아키텍처 설계</h3>
+                            <p>최적의 데이터 파이프라인 및 아키텍처 설계</p>
+                            <div class="product-price">3,000,000원</div>
+                            <button class="add-to-cart-btn" data-product="데이터 아키텍처 설계" data-price="3000000">장바구니 담기</button>
+                        </div>
+                    </div>
+                    <div class="product-card consulting-card">
+                        <div class="product-image">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>데이터 팀 역량 강화</h3>
+                            <p>조직 내 데이터 분석 역량 향상 프로그램</p>
+                            <div class="product-price">1,500,000원</div>
+                            <button class="add-to-cart-btn" data-product="데이터 팀 역량 강화" data-price="1500000">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 장바구니 사이드바 -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>장바구니</h3>
+            <button id="close-cart" class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- 장바구니 아이템들이 여기에 추가됩니다 -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>총 금액: <span id="cart-total">0원</span></strong>
+            </div>
+            <button id="checkout-btn" class="checkout-btn">결제하기</button>
+        </div>
+    </div>
+
+    <!-- 장바구니 플로팅 버튼 -->
+    <button id="cart-toggle" class="cart-toggle">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count" class="cart-count">0</span>
+    </button>
+
+    <!-- 로그인 모달 -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h3>로그인</h3>
+                <button id="close-login" class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>비밀번호</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            로그인 상태 유지
+                        </label>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">로그인</button>
+                </form>
+                <div class="auth-divider">
+                    <span>또는</span>
+                </div>
+                <div class="social-login">
+                    <button class="social-btn kakao-btn">
+                        <i class="fas fa-comment"></i>
+                        카카오로 로그인
+                    </button>
+                    <button class="social-btn google-btn">
+                        <i class="fab fa-google"></i>
+                        구글로 로그인
+                    </button>
+                </div>
+                <div class="auth-footer">
+                    <p>아직 계정이 없으신가요? <button id="show-signup" class="link-btn">회원가입</button></p>
+                    <button id="forgot-password" class="link-btn">비밀번호를 잊으셨나요?</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 회원가입 모달 -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h3>회원가입</h3>
+                <button id="close-signup" class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="signup-form" class="auth-form">
+                    <div class="form-group">
+                        <label>이름</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="email" id="signup-email" required>
+                        <div class="input-help">이메일은 아이디로 사용됩니다</div>
+                    </div>
+                    <div class="form-group">
+                        <label>비밀번호</label>
+                        <input type="password" id="signup-password" required minlength="6">
+                        <div class="input-help">최소 6자 이상 입력해주세요</div>
+                    </div>
+                    <div class="form-group">
+                        <label>비밀번호 확인</label>
+                        <input type="password" id="signup-password-confirm" required>
+                    </div>
+                    <div class="form-group">
+                        <label>전화번호</label>
+                        <input type="tel" id="signup-phone" required>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="agree-terms" required>
+                            <span class="checkmark"></span>
+                            <a href="#" class="link-text">이용약관</a> 및 <a href="#" class="link-text">개인정보처리방침</a>에 동의합니다
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="agree-marketing">
+                            <span class="checkmark"></span>
+                            마케팅 정보 수신에 동의합니다 (선택)
+                        </label>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">회원가입</button>
+                </form>
+                <div class="auth-footer">
+                    <p>이미 계정이 있으신가요? <button id="show-login" class="link-btn">로그인</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 결제 모달 -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>결제하기</h3>
+                <button id="close-payment" class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-summary">
+                    <h4>주문 요약</h4>
+                    <div id="payment-items"></div>
+                    <div class="payment-total">
+                        <strong>결제 금액: <span id="payment-total">0원</span></strong>
+                    </div>
+                </div>
+                <div class="payment-form">
+                    <h4>결제 정보</h4>
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label>이름</label>
+                            <input type="text" id="buyer-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>이메일</label>
+                            <input type="email" id="buyer-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>전화번호</label>
+                            <input type="tel" id="buyer-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>결제 방법</label>
+                            <select id="payment-method" required>
+                                <option value="">선택하세요</option>
+                                <option value="card">신용카드</option>
+                                <option value="bank">무통장입금</option>
+                                <option value="kakaopay">카카오페이</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="payment-submit-btn">결제 완료</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
