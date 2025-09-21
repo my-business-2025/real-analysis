@@ -249,6 +249,11 @@ function setupAuthEventListeners() {
         handleSocialLogin('google');
     });
 
+    // 구글 회원가입 버튼
+    document.getElementById('google-signup-btn').addEventListener('click', () => {
+        handleSocialLogin('google');
+    });
+
     // 폼 제출
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
