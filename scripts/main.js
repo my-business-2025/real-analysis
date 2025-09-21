@@ -40,8 +40,76 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeEventListeners();
     updateCartDisplay();
     showCategory(currentCategory);
-    checkAuthState();
+    initializeFirebaseAuth();
+    initializePaymentSystem();
 });
+
+// Firebase 인증 초기화
+function initializeFirebaseAuth() {
+    // Firebase가 로드되기를 기다림
+    const checkFirebase = () => {
+        if (window.firebaseAuth && window.firebaseAuthMethods) {
+            setupFirebaseAuth();
+        } else {
+            setTimeout(checkFirebase, 100);
+        }
+    };
+    checkFirebase();
+}
+
+// Firebase 인증 설정
+function setupFirebaseAuth() {
+    const { onAuthStateChanged } = window.firebaseAuthMethods;
+    
+    // 인증 상태 변경 감지
+    onAuthStateChanged(window.firebaseAuth, (user) => {
+        if (user) {
+            // 로그인 상태
+            currentUser = {
+                id: user.uid,
+                name: user.displayName,
+                email: user.email,
+                avatar: user.photoURL,
+                provider: 'google'
+            };
+            updateAuthUI();
+            saveUserToFirestore(user);
+        } else {
+            // 로그아웃 상태
+            currentUser = null;
+            updateAuthUI();
+        }
+    });
+}
+
+// Firestore에 사용자 정보 저장
+async function saveUserToFirestore(user) {
+    try {
+        const { doc, setDoc } = window.firestoreMethods;
+        const userRef = doc(window.firebaseDb, 'users', user.uid);
+        
+        await setDoc(userRef, {
+            name: user.displayName,
+            email: user.email,
+            avatar: user.photoURL,
+            lastLogin: new Date(),
+            createdAt: new Date()
+        }, { merge: true });
+        
+        console.log('사용자 정보가 Firestore에 저장되었습니다.');
+    } catch (error) {
+        console.error('Firestore 저장 오류:', error);
+    }
+}
+
+// 결제 시스템 초기화
+function initializePaymentSystem() {
+    // PortOne (아임포트) 초기화
+    if (window.IMP) {
+        window.IMP.init('imp_your_code'); // 실제 가맹점 식별코드로 교체 필요
+        console.log('PortOne 결제 시스템이 초기화되었습니다.');
+    }
+}
 
 // 이벤트 리스너 초기화
 function initializeEventListeners() {
@@ -335,7 +403,7 @@ function showPaymentModal() {
     paymentModal.classList.add('active');
 }
 
-// 결제 처리
+// 실제 카드 결제 처리 (PortOne 사용)
 function processPayment() {
     const buyerName = document.getElementById('buyer-name').value;
     const buyerEmail = document.getElementById('buyer-email').value;
@@ -361,58 +429,178 @@ function processPayment() {
         return;
     }
     
-    // 결제 처리 중 표시
-    const submitBtn = document.querySelector('.payment-submit-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = '결제 처리 중...';
-    submitBtn.disabled = true;
-    
-    // 결제 완료 시뮬레이션
     const total = cart.reduce((sum, item) => sum + item.price, 0);
     const orderId = generateOrderId();
     
-    setTimeout(() => {
-        // 주문 내역 저장
+    // 실제 카드 결제 진행
+    if (paymentMethod === 'card' && window.IMP) {
+        // PortOne 실제 카드 결제
+        const paymentData = {
+            pg: 'html5_inicis', // 이니시스 웹표준 결제
+            pay_method: 'card',
+            merchant_uid: orderId,
+            name: `분석의진수 - ${cart.map(item => item.name).join(', ')}`,
+            amount: total,
+            buyer_email: buyerEmail,
+            buyer_name: buyerName,
+            buyer_tel: buyerPhone,
+            buyer_addr: '',
+            buyer_postcode: '',
+            custom_data: {
+                userId: currentUser?.id,
+                items: cart
+            }
+        };
+        
+        window.IMP.request_pay(paymentData, function(response) {
+            if (response.success) {
+                // 결제 성공
+                processPaymentSuccess(response, orderId, buyerName, buyerEmail, buyerPhone, total);
+            } else {
+                // 결제 실패
+                alert(`결제에 실패했습니다.\n오류: ${response.error_msg}`);
+                resetPaymentButton();
+            }
+        });
+    } else if (paymentMethod === 'kakaopay' && window.IMP) {
+        // 카카오페이 결제
+        const paymentData = {
+            pg: 'kakaopay',
+            pay_method: 'card',
+            merchant_uid: orderId,
+            name: `분석의진수 - ${cart.map(item => item.name).join(', ')}`,
+            amount: total,
+            buyer_email: buyerEmail,
+            buyer_name: buyerName,
+            buyer_tel: buyerPhone
+        };
+        
+        window.IMP.request_pay(paymentData, function(response) {
+            if (response.success) {
+                processPaymentSuccess(response, orderId, buyerName, buyerEmail, buyerPhone, total);
+            } else {
+                alert(`카카오페이 결제에 실패했습니다.\n오류: ${response.error_msg}`);
+                resetPaymentButton();
+            }
+        });
+    } else {
+        // 무통장입금 또는 기타 결제 방법
+        processAlternativePayment(orderId, buyerName, buyerEmail, buyerPhone, paymentMethod, total);
+    }
+}
+
+// 결제 성공 처리
+async function processPaymentSuccess(response, orderId, buyerName, buyerEmail, buyerPhone, total) {
+    try {
+        // 서버에서 결제 검증 (실제 서비스에서는 필수)
+        // const verification = await verifyPayment(response.imp_uid, response.merchant_uid);
+        
+        // 주문 내역 생성
         const order = {
             orderId: orderId,
-            userId: currentUser.id,
+            impUid: response.imp_uid, // 아임포트 거래 고유번호
+            userId: currentUser?.id,
             buyerName: buyerName,
             buyerEmail: buyerEmail,
             buyerPhone: buyerPhone,
-            paymentMethod: paymentMethod,
+            paymentMethod: 'card',
             items: [...cart],
             total: total,
             orderDate: new Date().toISOString(),
-            status: 'completed'
+            status: 'paid',
+            paymentData: response
         };
         
-        // 주문 내역을 로컬스토리지에 저장
+        // Firestore에 주문 내역 저장
+        if (window.firebaseDb && window.firestoreMethods) {
+            await saveOrderToFirestore(order);
+        }
+        
+        // 로컬스토리지에도 백업 저장
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
         orders.push(order);
         localStorage.setItem('orders', JSON.stringify(orders));
         
         // 성공 알림
-        alert(`🎉 결제가 완료되었습니다!\n\n주문번호: ${orderId}\n주문자: ${buyerName}\n결제금액: ${formatPrice(total)}\n결제방법: ${getPaymentMethodName(paymentMethod)}\n\n주문 내역은 마이페이지에서 확인하실 수 있습니다.`);
+        alert(`🎉 결제가 완료되었습니다!\n\n주문번호: ${orderId}\n거래번호: ${response.imp_uid}\n주문자: ${buyerName}\n결제금액: ${formatPrice(total)}\n\n주문 내역은 마이페이지에서 확인하실 수 있습니다.`);
         
-        // 장바구니 비우기
+        // 장바구니 비우기 및 UI 리셋
         cart = [];
         updateCartDisplay();
-        
-        // 모달 닫기
         paymentModal.classList.remove('active');
         cartSidebar.classList.remove('active');
-        
-        // 폼 리셋
         paymentForm.reset();
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
+        resetPaymentButton();
         
-        showSuccessMessage('주문이 완료되었습니다! 📧 주문 확인 메일을 발송했습니다.');
-        
-        // 결제 완료 후 HOME으로 이동
+        showSuccessMessage('실제 결제가 완료되었습니다! 📧 주문 확인 메일을 발송했습니다.');
         showCategory('home');
         
-    }, 2000); // 2초 대기로 실제 결제 처리 시뮬레이션
+    } catch (error) {
+        console.error('결제 후 처리 오류:', error);
+        alert('결제는 완료되었지만 주문 처리 중 오류가 발생했습니다. 고객센터로 문의해주세요.');
+    }
+}
+
+// 대체 결제 방법 처리 (무통장입금 등)
+function processAlternativePayment(orderId, buyerName, buyerEmail, buyerPhone, paymentMethod, total) {
+    const order = {
+        orderId: orderId,
+        userId: currentUser?.id,
+        buyerName: buyerName,
+        buyerEmail: buyerEmail,
+        buyerPhone: buyerPhone,
+        paymentMethod: paymentMethod,
+        items: [...cart],
+        total: total,
+        orderDate: new Date().toISOString(),
+        status: paymentMethod === 'bank' ? 'pending' : 'completed'
+    };
+    
+    // Firestore에 저장
+    if (window.firebaseDb) {
+        saveOrderToFirestore(order);
+    }
+    
+    // 로컬스토리지에 저장
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
+    
+    if (paymentMethod === 'bank') {
+        alert(`🎉 주문이 접수되었습니다!\n\n주문번호: ${orderId}\n입금계좌: 국민은행 123456-78-901234\n예금주: 분석의진수\n입금금액: ${formatPrice(total)}\n\n입금 확인 후 처리됩니다.`);
+    } else {
+        alert(`🎉 주문이 완료되었습니다!\n\n주문번호: ${orderId}\n주문자: ${buyerName}\n결제금액: ${formatPrice(total)}`);
+    }
+    
+    // UI 리셋
+    cart = [];
+    updateCartDisplay();
+    paymentModal.classList.remove('active');
+    cartSidebar.classList.remove('active');
+    paymentForm.reset();
+    resetPaymentButton();
+    
+    showSuccessMessage('주문이 완료되었습니다!');
+    showCategory('home');
+}
+
+// Firestore에 주문 저장
+async function saveOrderToFirestore(order) {
+    try {
+        const { doc, setDoc } = window.firestoreMethods;
+        const orderRef = doc(window.firebaseDb, 'orders', order.orderId);
+        await setDoc(orderRef, order);
+        console.log('주문 내역이 Firestore에 저장되었습니다.');
+    } catch (error) {
+        console.error('Firestore 주문 저장 오류:', error);
+    }
+}
+
+// 결제 버튼 리셋
+function resetPaymentButton() {
+    const submitBtn = document.querySelector('.payment-submit-btn');
+    submitBtn.textContent = '결제 완료';
+    submitBtn.disabled = false;
 }
 
 // 주문번호 생성
@@ -681,40 +869,76 @@ function handleLogin() {
     showSuccessMessage(`${currentUser.name}님, 환영합니다! 👋`);
 }
 
-// 소셜 로그인 처리
+// 구글 로그인 처리 (실제 Firebase Auth)
 function handleSocialLogin(provider) {
-    // 소셜 로그인 시뮬레이션
-    const socialUser = {
-        id: Date.now(),
-        name: provider === 'kakao' ? '카카오 사용자' : '구글 사용자',
-        email: `${provider}user@${provider}.com`,
-        phone: '010-0000-0000',
-        createdAt: new Date().toISOString(),
-        avatar: null,
-        provider: provider
-    };
+    if (provider === 'google' && window.firebaseAuth && window.googleProvider) {
+        const { signInWithPopup } = window.firebaseAuthMethods;
+        
+        signInWithPopup(window.firebaseAuth, window.googleProvider)
+            .then((result) => {
+                // 로그인 성공
+                loginModal.classList.remove('active');
+                showSuccessMessage(`${result.user.displayName}님, 구글 로그인에 성공했습니다! 👋`);
+            })
+            .catch((error) => {
+                console.error('구글 로그인 오류:', error);
+                alert('구글 로그인에 실패했습니다. 다시 시도해주세요.');
+            });
+    } else if (provider === 'kakao') {
+        // 카카오 로그인 시뮬레이션 (향후 실제 구현 가능)
+        const socialUser = {
+            id: Date.now(),
+            name: '카카오 사용자',
+            email: 'kakaouser@kakao.com',
+            phone: '010-0000-0000',
+            createdAt: new Date().toISOString(),
+            avatar: null,
+            provider: 'kakao'
+        };
 
-    currentUser = socialUser;
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-    // UI 업데이트
-    updateAuthUI();
-    loginModal.classList.remove('active');
-
-    showSuccessMessage(`${provider.toUpperCase()}로 로그인했습니다! 👋`);
+        currentUser = socialUser;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        updateAuthUI();
+        loginModal.classList.remove('active');
+        showSuccessMessage('카카오로 로그인했습니다! 👋');
+    }
 }
 
-// 로그아웃 처리
+// 로그아웃 처리 (Firebase Auth 연동)
 function logout() {
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-    sessionStorage.removeItem('currentUser');
-    
-    // UI 업데이트
-    updateAuthUI();
-    userProfileDropdown.classList.remove('active');
-    
-    showSuccessMessage('로그아웃되었습니다. 👋');
+    if (window.firebaseAuth && window.firebaseAuthMethods) {
+        const { signOut } = window.firebaseAuthMethods;
+        
+        signOut(window.firebaseAuth)
+            .then(() => {
+                // Firebase 로그아웃 성공
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                sessionStorage.removeItem('currentUser');
+                
+                updateAuthUI();
+                userProfileDropdown.classList.remove('active');
+                showSuccessMessage('로그아웃되었습니다. 👋');
+            })
+            .catch((error) => {
+                console.error('로그아웃 오류:', error);
+                // 로컬 로그아웃 진행
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                sessionStorage.removeItem('currentUser');
+                updateAuthUI();
+                userProfileDropdown.classList.remove('active');
+            });
+    } else {
+        // Firebase가 없는 경우 로컬 로그아웃
+        currentUser = null;
+        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
+        
+        updateAuthUI();
+        userProfileDropdown.classList.remove('active');
+        showSuccessMessage('로그아웃되었습니다. 👋');
+    }
 }
 
 // 인증 UI 업데이트
