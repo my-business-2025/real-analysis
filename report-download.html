@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음주운전 심층분석 리포트 - SENSEMAKERS</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .download-page {
+            min-height: 80vh;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .download-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .report-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .report-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .report-description {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+        
+        .report-price {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .report-price .original {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 15px;
+        }
+        
+        .report-price .sale {
+            color: #e74c3c;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+        }
+        
+        .back-btn {
+            background: transparent;
+            color: #3498db;
+            border: 2px solid #3498db;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .report-info {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid #eee;
+            text-align: left;
+        }
+        
+        .report-info h3 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .report-info ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .report-info li {
+            padding: 10px 0;
+            color: #666;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .report-info li:last-child {
+            border-bottom: none;
+        }
+        
+        .report-info li i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="logo-text">SENSEMAKERS</h1>
+                    <p class="logo-tagline">데이터로 인식을 만드는 사람들</p>
+                </div>
+                <div class="header-actions">
+                    <div id="auth-buttons" class="auth-buttons">
+                        <button id="login-btn" class="login-btn" onclick="window.location.href='index.html'">홈으로</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 다운로드 페이지 -->
+    <main class="main">
+        <div class="download-page">
+            <div class="download-container">
+                <div class="report-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h1 class="report-title">음주운전 심층분석 리포트</h1>
+                <p class="report-description">
+                    음주운전 관련 데이터를 심층 분석하여 통계, 원인, 대응 방안을 제시하는 전문 리포트입니다.<br>
+                    최신 데이터와 전문가 분석을 통해 음주운전 문제의 본질을 파악하고 해결책을 모색합니다.
+                </p>
+                
+                <div class="report-price">
+                    <span class="original">390,000원</span>
+                    <span class="sale">150,000원</span>
+                </div>
+                
+                <button class="download-btn" onclick="downloadReport()">
+                    <i class="fas fa-download"></i> 리포트 다운로드
+                </button>
+                
+                <div>
+                    <button class="back-btn" onclick="window.location.href='index.html'">
+                        <i class="fas fa-arrow-left"></i> 목록으로 돌아가기
+                    </button>
+                </div>
+                
+                <div class="report-info">
+                    <h3>리포트 구성</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> 음주운전 통계 데이터 분석</li>
+                        <li><i class="fas fa-check-circle"></i> 음주운전 발생 원인 분석</li>
+                        <li><i class="fas fa-check-circle"></i> 지역별/연령대별 상세 분석</li>
+                        <li><i class="fas fa-check-circle"></i> 음주운전 예방 방안 제시</li>
+                        <li><i class="fas fa-check-circle"></i> 정책 개선 제안</li>
+                        <li><i class="fas fa-check-circle"></i> 시각화 차트 및 그래프 포함</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function downloadReport() {
+            // 실제 다운로드 로직 (결제 후 다운로드 가능하도록 구현)
+            if (confirm('리포트를 다운로드하시겠습니까?\n\n결제가 완료된 후 다운로드가 가능합니다.')) {
+                // 결제 모달 표시 또는 다운로드 진행
+                alert('결제 페이지로 이동합니다.');
+                // 실제로는 결제 프로세스로 이동
+            }
+        }
+    </script>
+</body>
+</html>

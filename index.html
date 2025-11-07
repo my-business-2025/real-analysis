@@ -15,7 +15,7 @@
     <meta name="theme-color" content="#3498db">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzM0OThkYiIvPgo8cGF0aCBkPSJNOCAxMkwxNiA4TDI0IDEyTDE2IDE2TDggMTJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNOCAxOEwxNiAxNEwyNCAxOEwxNiAyMkw4IDE4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==">
     <link rel="stylesheet" href="styles/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css">
     
@@ -129,7 +129,7 @@
             <div id="home" class="category-content active">
                 <div class="home-hero">
                     <div class="hero-content">
-                        <h1 class="hero-title">감각적인 데이터 분석으로 세상이 다르게 보입니다</h1>
+                        <h1 class="hero-title">감각적인 데이터 분석으로<br>세상이 다르게 보입니다</h1>
                         <div class="hero-stats">
                             <div class="stat-item">
                                 <div class="stat-number">1,000+</div>
@@ -157,46 +157,31 @@
                             <p>인식이 태도를 바꾸고,</p>
                             <p>태도가 행동을 바꾸면,</p>
                             <p>결국 세상이 달라집니다.</p>
-                            <p class="brand-story-end">우리는 데이터로 출발해,<br>세상의 변화를 새롭게 그려갑니다.</p>
+                            <br>
+                            <p class="brand-story-end">우리는 데이터로 출발해<br>세상의 변화를 새롭게 그려갑니다.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 인기 카테고리 -->
+                <!-- 최신 리포트 -->
                 <section class="popular-categories">
-                    <h2 class="section-title">인기 카테고리</h2>
+                    <h2 class="section-title">최신 리포트</h2>
                     <div class="category-grid">
-                        <div class="category-card" onclick="showCategory('services')">
+                        <div class="category-card" onclick="window.location.href='report-download.html'">
                             <div class="category-icon">
-                                <i class="fas fa-analytics"></i>
+                                <i class="fas fa-file-alt"></i>
                             </div>
-                            <h3>분석서비스</h3>
-                            <p>실시간 데이터 분석부터 AI 예측 모델링까지</p>
-                            <span class="category-price">500,000원부터</span>
+                            <h3>음주운전 심층분석 리포트</h3>
+                            <div class="category-price">
+                                <span class="original-price">390,000원</span>
+                                <span class="sale-price">150,000원</span>
+                            </div>
                         </div>
-                        <div class="category-card" onclick="showCategory('courses')">
-                            <div class="category-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <h3>분석강의</h3>
-                            <p>초보자부터 전문가까지 체계적인 교육 과정</p>
-                            <span class="category-price">120,000원부터</span>
+                        <div class="category-card empty-card">
                         </div>
-                        <div class="category-card" onclick="showCategory('books')">
-                            <div class="category-icon">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <h3>도서</h3>
-                            <p>데이터 분석 전문가들의 실무 경험이 담긴 도서</p>
-                            <span class="category-price">15,000원부터</span>
+                        <div class="category-card empty-card">
                         </div>
-                        <div class="category-card" onclick="showCategory('consulting')">
-                            <div class="category-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h3>분석컨설팅</h3>
-                            <p>기업 맞춤형 데이터 전략 수립 및 구현</p>
-                            <span class="category-price">1,500,000원부터</span>
+                        <div class="category-card empty-card">
                         </div>
                     </div>
                 </section>
