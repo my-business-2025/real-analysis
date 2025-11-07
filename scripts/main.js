@@ -105,9 +105,21 @@ async function saveUserToFirestore(user) {
 // 결제 시스템 초기화
 function initializePaymentSystem() {
     // PortOne (아임포트) 초기화
+    // ⚠️ 실제 사용을 위해서는 PortOne 콘솔에서 발급받은 가맹점 식별코드로 교체하세요
+    // 테스트용: 'imp12345678' (실제 결제는 되지 않음)
+    // 실제용: PortOne 콘솔(https://admin.portone.io)에서 발급받은 코드 입력
+    const PORTONE_STORE_ID = 'imp12345678'; // ← 여기에 실제 가맹점 식별코드를 입력하세요
+    
     if (window.IMP) {
-        window.IMP.init('imp_your_code'); // 실제 가맹점 식별코드로 교체 필요
-        console.log('PortOne 결제 시스템이 초기화되었습니다.');
+        try {
+            window.IMP.init(PORTONE_STORE_ID);
+            console.log('✅ PortOne 결제 시스템이 초기화되었습니다.');
+        } catch (error) {
+            console.error('❌ PortOne 초기화 오류:', error);
+            alert('결제 시스템 초기화에 실패했습니다. 관리자에게 문의해주세요.');
+        }
+    } else {
+        console.warn('⚠️ PortOne SDK가 로드되지 않았습니다. 결제 기능을 사용할 수 없습니다.');
     }
 }
 
@@ -125,10 +137,43 @@ function initializeEventListeners() {
 
     // 장바구니 담기 버튼
     document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('add-to-cart-btn')) {
-            const productName = e.target.getAttribute('data-product');
-            const productPrice = parseInt(e.target.getAttribute('data-price'));
+        const addToCartBtn = e.target.closest('.add-to-cart-btn');
+        if (addToCartBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const productName = addToCartBtn.getAttribute('data-product');
+            const productPrice = parseInt(addToCartBtn.getAttribute('data-price'));
             addToCart(productName, productPrice);
+        }
+    });
+
+    // 바로 구매하기 버튼 (결제 모달 바로 표시)
+    document.addEventListener('click', (e) => {
+        const buyNowBtn = e.target.closest('.buy-now-btn');
+        if (buyNowBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 로그인 확인
+            if (!currentUser) {
+                alert('결제를 위해 로그인이 필요합니다.');
+                loginModal.classList.add('active');
+                return;
+            }
+            
+            const productName = buyNowBtn.getAttribute('data-product');
+            const productPrice = parseInt(buyNowBtn.getAttribute('data-price'));
+            const downloadUrl = buyNowBtn.getAttribute('data-download-url');
+            
+            // 장바구니에 추가하고 결제 모달 표시
+            cart = []; // 기존 장바구니 비우기
+            addToCart(productName, productPrice);
+            
+            // 다운로드 URL 저장 (결제 완료 후 이동)
+            window.pendingDownloadUrl = downloadUrl;
+            
+            // 결제 모달 표시
+            showPaymentModal();
         }
     });
 
@@ -527,7 +572,7 @@ async function processPaymentSuccess(response, orderId, buyerName, buyerEmail, b
         localStorage.setItem('orders', JSON.stringify(orders));
         
         // 성공 알림
-        alert(`🎉 결제가 완료되었습니다!\n\n주문번호: ${orderId}\n거래번호: ${response.imp_uid}\n주문자: ${buyerName}\n결제금액: ${formatPrice(total)}\n\n주문 내역은 마이페이지에서 확인하실 수 있습니다.`);
+        alert(`🎉 결제가 완료되었습니다!\n\n주문번호: ${orderId}\n거래번호: ${response.imp_uid}\n주문자: ${buyerName}\n결제금액: ${formatPrice(total)}\n\n리포트 다운로드 페이지로 이동합니다.`);
         
         // 장바구니 비우기 및 UI 리셋
         cart = [];
@@ -538,7 +583,14 @@ async function processPaymentSuccess(response, orderId, buyerName, buyerEmail, b
         resetPaymentButton();
         
         showSuccessMessage('실제 결제가 완료되었습니다! 📧 주문 확인 메일을 발송했습니다.');
-        showCategory('home');
+        
+        // 다운로드 페이지로 이동 (바로 구매하기로 결제한 경우)
+        if (window.pendingDownloadUrl) {
+            window.location.href = window.pendingDownloadUrl;
+            window.pendingDownloadUrl = null; // 초기화
+        } else {
+            showCategory('home');
+        }
         
     } catch (error) {
         console.error('결제 후 처리 오류:', error);
@@ -586,7 +638,14 @@ function processAlternativePayment(orderId, buyerName, buyerEmail, buyerPhone, p
     resetPaymentButton();
     
     showSuccessMessage('주문이 완료되었습니다!');
-    showCategory('home');
+    
+    // 다운로드 페이지로 이동 (바로 구매하기로 결제한 경우)
+    if (window.pendingDownloadUrl) {
+        window.location.href = window.pendingDownloadUrl;
+        window.pendingDownloadUrl = null; // 초기화
+    } else {
+        showCategory('home');
+    }
 }
 
 // Firestore에 주문 저장
