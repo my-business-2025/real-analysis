@@ -15,7 +15,7 @@
     <meta name="theme-color" content="#3498db">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzM0OThkYiIvPgo8cGF0aCBkPSJNOCAxMkwxNiA4TDI0IDEyTDE2IDE2TDggMTJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNOCAxOEwxNiAxNEwyNCAxOEwxNiAyMkw4IDE4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==">
     <link rel="stylesheet" href="styles/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css">
     
@@ -59,7 +59,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img src="logo.png" alt="분석의진수" class="logo-image">
+                    <h1 class="logo-text">SENSEMAKERS</h1>
                     <p>데이터로 인식을 만드는 사람들이</p>
                 </div>
                 <div class="header-actions">
@@ -107,13 +107,9 @@
     <nav class="nav">
         <div class="container">
             <div class="nav-content">
-                <span class="nav-subtitle">데이터의 삶을 위한 인사이트</span>
                 <ul class="nav-menu">
-                    <li><a href="#" class="nav-link active" data-category="home">HOME</a></li>
-                    <li><a href="#" class="nav-link" data-category="services">분석서비스</a></li>
-                    <li><a href="#" class="nav-link" data-category="courses">분석강의</a></li>
-                    <li><a href="#" class="nav-link" data-category="books">도서</a></li>
-                    <li><a href="#" class="nav-link" data-category="consulting">분석컨설팅</a></li>
+                    <li><a href="#" class="nav-link active" data-category="home">Brand Story</a></li>
+                    <li><a href="#" class="nav-link" data-category="books">분석리포트</a></li>
                 </ul>
                 <div class="sort-dropdown">
                     <select>
@@ -238,97 +234,8 @@
                 </section>
             </div>
 
-            <!-- 서비스 카테고리별 콘텐츠 -->
-            <div id="services" class="category-content">
-                <h2 class="category-title">데이터 분석 서비스</h2>
-                <div class="products-grid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>실시간 데이터 분석</h3>
-                            <p>비즈니스 데이터를 실시간으로 분석하고 인사이트를 제공합니다.</p>
-                            <div class="product-price">500,000원</div>
-                            <button class="add-to-cart-btn" data-product="실시간 데이터 분석" data-price="500000">장바구니 담기</button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>데이터 마이닝 서비스</h3>
-                            <p>대용량 데이터에서 숨겨진 패턴을 발견합니다.</p>
-                            <div class="product-price">800,000원</div>
-                            <button class="add-to-cart-btn" data-product="데이터 마이닝 서비스" data-price="800000">장바구니 담기</button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>AI 예측 모델링</h3>
-                            <p>머신러닝을 활용한 예측 모델을 구축합니다.</p>
-                            <div class="product-price">1,200,000원</div>
-                            <button class="add-to-cart-btn" data-product="AI 예측 모델링" data-price="1200000">장바구니 담기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="courses" class="category-content">
-                <h2 class="category-title">데이터 분석 강의</h2>
-                <div class="products-grid">
-                    <div class="product-card course-card">
-                        <div class="course-badge">베스트셀러</div>
-                        <div class="product-image course-image">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="product-info">
-                            <p>초보자를 위한</p>
-                            <h3>데이터 분석 기초 과정</h3>
-                            <p>Excel부터 Python까지, 데이터 분석의 모든 것을 배워보세요</p>
-                            <div class="product-price">120,000원</div>
-                            <button class="add-to-cart-btn" data-product="데이터 분석 기초 과정" data-price="120000">장바구니 담기</button>
-                        </div>
-                    </div>
-                    <div class="product-card course-card">
-                        <div class="course-badge sale">SALE</div>
-                        <div class="product-image course-image">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <div class="product-info">
-                            <p>실무진을 위한</p>
-                            <h3>머신러닝 마스터 클래스</h3>
-                            <p>실제 비즈니스 케이스로 배우는 AI/ML 실무 강의</p>
-                            <div class="product-price">
-                                <span class="original-price">300,000원</span>
-                                <span class="sale-price">250,000원</span>
-                            </div>
-                            <button class="add-to-cart-btn" data-product="머신러닝 마스터 클래스" data-price="250000">장바구니 담기</button>
-                        </div>
-                    </div>
-                    <div class="product-card course-card">
-                        <div class="course-badge">온라인 LIVE</div>
-                        <div class="product-image course-image">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <div class="product-info">
-                            <p>데이터 엔지니어를 위한</p>
-                            <h3>빅데이터 파이프라인 구축</h3>
-                            <p>AWS, Spark, Kafka를 활용한 대규모 데이터 처리</p>
-                            <div class="product-price">180,000원</div>
-                            <button class="add-to-cart-btn" data-product="빅데이터 파이프라인 구축" data-price="180000">장바구니 담기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
             <div id="books" class="category-content">
-                <h2 class="category-title">데이터 분석 도서</h2>
+                <h2 class="category-title">분석리포트</h2>
                 <p class="section-subtitle">"사건을 누르면 책에 대한 자세한 정보를 확인할 수 있습니다"</p>
                 <div class="products-grid books-grid">
                     <div class="product-card book-card">
@@ -373,44 +280,6 @@
                 </div>
             </div>
 
-            <div id="consulting" class="category-content">
-                <h2 class="category-title">데이터 분석 컨설팅</h2>
-                <div class="products-grid">
-                    <div class="product-card consulting-card">
-                        <div class="product-image">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>기업 데이터 전략 컨설팅</h3>
-                            <p>기업의 데이터 활용 전략 수립 및 실행 지원</p>
-                            <div class="product-price">2,000,000원</div>
-                            <button class="add-to-cart-btn" data-product="기업 데이터 전략 컨설팅" data-price="2000000">장바구니 담기</button>
-                        </div>
-                    </div>
-                    <div class="product-card consulting-card">
-                        <div class="product-image">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>데이터 아키텍처 설계</h3>
-                            <p>최적의 데이터 파이프라인 및 아키텍처 설계</p>
-                            <div class="product-price">3,000,000원</div>
-                            <button class="add-to-cart-btn" data-product="데이터 아키텍처 설계" data-price="3000000">장바구니 담기</button>
-                        </div>
-                    </div>
-                    <div class="product-card consulting-card">
-                        <div class="product-image">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div class="product-info">
-                            <h3>데이터 팀 역량 강화</h3>
-                            <p>조직 내 데이터 분석 역량 향상 프로그램</p>
-                            <div class="product-price">1,500,000원</div>
-                            <button class="add-to-cart-btn" data-product="데이터 팀 역량 강화" data-price="1500000">장바구니 담기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 
