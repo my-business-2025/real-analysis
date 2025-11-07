@@ -32,13 +32,22 @@ body {
     align-items: center;
 }
 
+.logo {
+    text-align: left;
+}
+
 .logo-text {
     font-family: 'Poppins', sans-serif;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 600;
     letter-spacing: 3px;
     margin-bottom: 5px;
     color: white;
+    text-align: left;
+}
+
+.logo-tagline {
+    text-align: left;
 }
 
 .logo-image {
@@ -1012,6 +1021,23 @@ body {
     align-items: center;
 }
 
+.brand-story {
+    color: #2c3e50;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.brand-story p {
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+.brand-story-end {
+    margin-top: 20px;
+    font-weight: 600;
+    color: #3498db;
+}
+
 .chart-animation {
     width: 200px;
     height: 200px;
@@ -1214,6 +1240,15 @@ body {
     .cta-btn {
         width: 100%;
         max-width: 300px;
+    }
+    
+    .brand-story {
+        font-size: 1rem;
+        text-align: center;
+    }
+    
+    .brand-story p {
+        margin-bottom: 6px;
     }
     
     .chart-animation {
