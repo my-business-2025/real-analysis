@@ -32,6 +32,13 @@ body {
     align-items: center;
 }
 
+.logo-image {
+    max-height: 60px;
+    width: auto;
+    margin-bottom: 8px;
+    display: block;
+}
+
 .logo h1 {
     font-size: 3rem;
     font-weight: 700;
@@ -1224,6 +1231,10 @@ body {
     .featured-grid {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+    
+    .logo-image {
+        max-height: 45px;
     }
     
     .logo h1 {
