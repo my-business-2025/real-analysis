@@ -357,6 +357,14 @@ function showCategory(category) {
             link.classList.add('active');
         }
     });
+    
+    // home 카테고리로 이동 시 페이지 상단으로 스크롤
+    if (category === 'home') {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
 }
 
 // 활성 네비게이션 링크 업데이트
