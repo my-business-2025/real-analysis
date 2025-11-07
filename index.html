@@ -24,6 +24,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
         import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+        import { getStorage, ref, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js';
         
         // Firebase 설정 (실제 프로젝트 설정)
         const firebaseConfig = {
@@ -40,14 +41,17 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
         const provider = new GoogleAuthProvider();
         
         // 전역 변수로 설정
         window.firebaseAuth = auth;
         window.firebaseDb = db;
+        window.firebaseStorage = storage;
         window.googleProvider = provider;
         window.firebaseAuthMethods = { signInWithPopup, signOut, onAuthStateChanged };
         window.firestoreMethods = { doc, setDoc, getDoc };
+        window.firebaseStorageMethods = { ref, getDownloadURL };
     </script>
     
     <!-- PortOne (아임포트) 결제 SDK -->
@@ -165,8 +169,8 @@
                             <button class="add-to-cart-btn" data-product="음주운전 심층분석 리포트" data-price="1">
                                 <i class="fas fa-shopping-cart"></i> 장바구니 담기
                             </button>
-                            <button class="download-btn" data-product="음주운전 심층분석 리포트" data-price="1" data-download-url="report-download.html">
-                                <i class="fas fa-download"></i> 다운로드
+                            <button class="view-btn" onclick="window.location.href='report-download.html'">
+                                <i class="fas fa-eye"></i> 보러가기
                             </button>
                         </div>
                         <div class="category-card empty-card">
@@ -194,8 +198,8 @@
                             <button class="add-to-cart-btn" data-product="음주운전 심층분석 리포트" data-price="1">
                                 <i class="fas fa-shopping-cart"></i> 장바구니 담기
                             </button>
-                            <button class="download-btn" data-product="음주운전 심층분석 리포트" data-price="1" data-download-url="report-download.html">
-                                <i class="fas fa-download"></i> 다운로드
+                            <button class="view-btn" onclick="window.location.href='report-download.html'">
+                                <i class="fas fa-eye"></i> 보러가기
                             </button>
                         </div>
                         <div class="category-card empty-card">

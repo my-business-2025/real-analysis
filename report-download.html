@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="styles/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getStorage, ref, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js';
+        
+        // Firebase 설정 (실제 프로젝트 설정)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUFu8MIhZvkMkyUxWmp2CPcv1FMHoPXIw",
+            authDomain: "datalife-mall.firebaseapp.com",
+            projectId: "datalife-mall",
+            storageBucket: "datalife-mall.firebasestorage.app",
+            messagingSenderId: "102942608960",
+            appId: "1:102942608960:web:e79f08dab085a8751719a5",
+            measurementId: "G-SRG6JC2J8C"
+        };
+        
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+        
+        // 전역 변수로 설정
+        window.firebaseStorage = storage;
+        window.firebaseStorageMethods = { ref, getDownloadURL };
+    </script>
     <style>
         .download-page {
             min-height: 80vh;
@@ -172,7 +197,7 @@
                     <span class="sale">150,000원</span>
                 </div>
                 
-                <button class="download-btn" onclick="downloadReport()">
+                <button class="download-btn" onclick="showPaymentForDownload()">
                     <i class="fas fa-download"></i> 리포트 다운로드
                 </button>
                 
@@ -197,7 +222,137 @@
         </div>
     </main>
 
+    <!-- 결제 모달 -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>결제하기</h3>
+                <button id="close-payment" class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-summary">
+                    <h4>주문 요약</h4>
+                    <div id="payment-items"></div>
+                    <div class="payment-total">
+                        <strong>결제 금액: <span id="payment-total">1원</span></strong>
+                    </div>
+                </div>
+                <div class="payment-form">
+                    <h4>결제 정보</h4>
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label>이름</label>
+                            <input type="text" id="buyer-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>이메일</label>
+                            <input type="email" id="buyer-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>전화번호</label>
+                            <input type="tel" id="buyer-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>결제 방법</label>
+                            <select id="payment-method" required>
+                                <option value="">선택하세요</option>
+                                <option value="card">신용카드</option>
+                                <option value="bank">무통장입금</option>
+                                <option value="kakaopay">카카오페이</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="payment-submit-btn">결제 완료</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // 결제 모달 관련 변수
+        const paymentModal = document.getElementById('payment-modal');
+        const closePayment = document.getElementById('close-payment');
+        const paymentForm = document.getElementById('payment-form');
+        const paymentItems = document.getElementById('payment-items');
+        
+        // 결제 모달 표시
+        function showPaymentForDownload() {
+            // 주문 요약 표시
+            paymentItems.innerHTML = `
+                <div class="payment-item">
+                    <span>음주운전 심층분석 리포트</span>
+                    <span>1원</span>
+                </div>
+            `;
+            
+            // 결제 모달 표시
+            paymentModal.classList.add('active');
+        }
+        
+        // 결제 모달 닫기
+        closePayment.addEventListener('click', () => {
+            paymentModal.classList.remove('active');
+        });
+        
+        // 모달 바깥 클릭시 닫기
+        paymentModal.addEventListener('click', (e) => {
+            if (e.target === paymentModal) {
+                paymentModal.classList.remove('active');
+            }
+        });
+        
+        // 결제 폼 제출
+        paymentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            processPayment();
+        });
+        
+        // 결제 처리
+        function processPayment() {
+            const buyerName = document.getElementById('buyer-name').value;
+            const buyerEmail = document.getElementById('buyer-email').value;
+            const buyerPhone = document.getElementById('buyer-phone').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+            
+            if (!buyerName || !buyerEmail || !buyerPhone || !paymentMethod) {
+                alert('모든 필드를 입력해주세요.');
+                return;
+            }
+            
+            // 이메일 유효성 검사
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(buyerEmail)) {
+                alert('올바른 이메일 주소를 입력해주세요.');
+                return;
+            }
+            
+            // 전화번호 유효성 검사
+            const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
+            if (!phoneRegex.test(buyerPhone)) {
+                alert('올바른 전화번호 형식을 입력해주세요. (예: 010-1234-5678)');
+                return;
+            }
+            
+            // 시뮬레이션 결제 처리
+            const submitBtn = document.querySelector('.payment-submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '결제 처리 중...';
+            
+            // 2초 후 결제 성공 처리
+            setTimeout(() => {
+                alert('🎉 결제가 완료되었습니다!\n\n리포트 다운로드를 시작합니다.');
+                
+                // 결제 모달 닫기
+                paymentModal.classList.remove('active');
+                paymentForm.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = '결제 완료';
+                
+                // 다운로드 실행
+                downloadReport();
+            }, 2000);
+        }
+        
         // 페이지 로드 시 결제 완료 여부 확인
         window.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -211,24 +366,65 @@
             }
         });
         
-        function downloadReport() {
-            // PDF 파일 다운로드
-            const pdfUrl = 'files/1_음주운전.pdf';
+        async function downloadReport() {
             const fileName = '음주운전_심층분석_리포트.pdf';
             
-            // 다운로드 링크 생성
-            const link = document.createElement('a');
-            link.href = pdfUrl;
-            link.download = fileName;
-            link.style.display = 'none';
+            // Firebase Storage에서 다운로드 시도 (설정된 경우)
+            if (window.firebaseStorage && window.firebaseStorageMethods) {
+                try {
+                    const { ref, getDownloadURL } = window.firebaseStorageMethods;
+                    const storageRef = ref(window.firebaseStorage, 'reports/1_음주운전.pdf');
+                    const downloadUrl = await getDownloadURL(storageRef);
+                    
+                    // Firebase Storage에서 다운로드
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = fileName;
+                    link.target = '_blank';
+                    link.style.display = 'none';
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showDownloadSuccess();
+                    return;
+                } catch (error) {
+                    console.warn('Firebase Storage 다운로드 실패, 로컬 파일로 시도:', error);
+                    // Firebase Storage 실패 시 로컬 파일로 fallback
+                }
+            }
             
-            // 다운로드 실행
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // 다운로드 완료 메시지
-            showDownloadSuccess();
+            // 로컬 파일 다운로드 (Firebase Storage 미설정 또는 실패 시)
+            try {
+                const pdfUrl = 'files/1_음주운전.pdf';
+                
+                // fetch로 파일을 가져와서 Blob으로 변환 후 다운로드
+                const response = await fetch(pdfUrl);
+                if (!response.ok) {
+                    throw new Error('파일을 찾을 수 없습니다.');
+                }
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // URL 해제
+                window.URL.revokeObjectURL(url);
+                
+                showDownloadSuccess();
+            } catch (error) {
+                console.error('다운로드 오류:', error);
+                alert('다운로드 중 오류가 발생했습니다. 파일이 존재하는지 확인해주세요.');
+            }
         }
         
         function showDownloadSuccess() {
