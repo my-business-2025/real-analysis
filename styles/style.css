@@ -373,7 +373,7 @@ body {
     transform: translateY(-2px);
 }
 
-.buy-now-btn {
+.download-btn {
     width: 100%;
     background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
     color: white;
@@ -387,7 +387,7 @@ body {
     font-size: 0.95rem;
 }
 
-.buy-now-btn:hover {
+.download-btn:hover {
     background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
     transform: translateY(-2px);
 }

@@ -147,10 +147,10 @@ function initializeEventListeners() {
         }
     });
 
-    // 바로 구매하기 버튼 (결제 모달 바로 표시)
+    // 다운로드 버튼 (결제 모달 표시)
     document.addEventListener('click', (e) => {
-        const buyNowBtn = e.target.closest('.buy-now-btn');
-        if (buyNowBtn) {
+        const downloadBtn = e.target.closest('.download-btn');
+        if (downloadBtn) {
             e.preventDefault();
             e.stopPropagation();
             
@@ -161,9 +161,12 @@ function initializeEventListeners() {
                 return;
             }
             
-            const productName = buyNowBtn.getAttribute('data-product');
-            const productPrice = parseInt(buyNowBtn.getAttribute('data-price'));
-            const downloadUrl = buyNowBtn.getAttribute('data-download-url');
+            const productName = downloadBtn.getAttribute('data-product');
+            const productPrice = parseInt(downloadBtn.getAttribute('data-price'));
+            const downloadUrl = downloadBtn.getAttribute('data-download-url');
+            
+            // 안내 메시지
+            alert('결제 후 다운로드가 가능합니다.');
             
             // 장바구니에 추가하고 결제 모달 표시
             cart = []; // 기존 장바구니 비우기
