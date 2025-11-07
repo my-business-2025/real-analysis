@@ -339,22 +339,23 @@
             submitBtn.textContent = '결제 처리 중...';
             
             // 2초 후 결제 성공 처리
-            setTimeout(async () => {
-                alert('🎉 결제가 완료되었습니다!\n\n리포트 다운로드를 시작합니다.');
-                
+            setTimeout(() => {
                 // 결제 모달 닫기
                 paymentModal.classList.remove('active');
                 paymentForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.textContent = '결제 완료';
                 
-                // 다운로드 실행 (await 추가)
-                try {
-                    await downloadReport();
-                } catch (error) {
+                // 다운로드 즉시 실행 (alert 전에)
+                downloadReport().then(() => {
+                    // 다운로드 시작 후 알림 표시
+                    setTimeout(() => {
+                        alert('🎉 결제가 완료되었습니다!\n\n리포트 다운로드가 시작되었습니다.');
+                    }, 500);
+                }).catch((error) => {
                     console.error('다운로드 오류:', error);
-                    alert('다운로드 중 오류가 발생했습니다. 다시 시도해주세요.');
-                }
+                    alert('결제는 완료되었지만 다운로드 중 오류가 발생했습니다.\n\n다시 시도해주세요.');
+                });
             }, 2000);
         }
         
@@ -401,39 +402,50 @@
             }
             
             // 로컬 파일 다운로드 (Firebase Storage 미설정 또는 실패 시)
-            const pdfUrl = 'files/1_음주운전.pdf';
-            console.log('다운로드 시작:', pdfUrl);
-            
-            // 직접 링크로 다운로드 (가장 안정적인 방법)
-            const link = document.createElement('a');
-            link.href = pdfUrl;
-            link.download = fileName;
-            link.style.display = 'none';
-            
-            // body에 추가
-            document.body.appendChild(link);
-            
-            // 클릭 이벤트 트리거
-            setTimeout(() => {
-                try {
-                    link.click();
-                    console.log('다운로드 링크 클릭됨');
-                } catch (clickError) {
-                    console.error('링크 클릭 오류:', clickError);
-                    // 새 창으로 열기 시도
-                    window.open(pdfUrl, '_blank');
-                }
+            return new Promise((resolve, reject) => {
+                const pdfUrl = 'files/1_음주운전.pdf';
+                console.log('다운로드 시작:', pdfUrl);
                 
-                // 정리
+                // 직접 링크로 다운로드 (가장 안정적인 방법)
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.download = fileName;
+                link.style.display = 'none';
+                
+                // body에 추가
+                document.body.appendChild(link);
+                
+                // 클릭 이벤트 트리거
                 setTimeout(() => {
-                    if (link.parentNode) {
-                        document.body.removeChild(link);
+                    try {
+                        link.click();
+                        console.log('다운로드 링크 클릭됨');
+                        
+                        // 성공 메시지 표시
+                        showDownloadSuccess();
+                        
+                        // 정리
+                        setTimeout(() => {
+                            if (link.parentNode) {
+                                document.body.removeChild(link);
+                            }
+                        }, 1000);
+                        
+                        resolve();
+                    } catch (clickError) {
+                        console.error('링크 클릭 오류:', clickError);
+                        // 새 창으로 열기 시도
+                        try {
+                            window.open(pdfUrl, '_blank');
+                            showDownloadSuccess();
+                            resolve();
+                        } catch (openError) {
+                            console.error('새 창 열기 오류:', openError);
+                            reject(openError);
+                        }
                     }
-                }, 1000);
-                
-                // 성공 메시지 표시
-                showDownloadSuccess();
-            }, 100);
+                }, 100);
+            });
         }
         
         function showDownloadSuccess() {
