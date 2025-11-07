@@ -339,7 +339,7 @@
             submitBtn.textContent = '결제 처리 중...';
             
             // 2초 후 결제 성공 처리
-            setTimeout(() => {
+            setTimeout(async () => {
                 alert('🎉 결제가 완료되었습니다!\n\n리포트 다운로드를 시작합니다.');
                 
                 // 결제 모달 닫기
@@ -348,8 +348,13 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = '결제 완료';
                 
-                // 다운로드 실행
-                downloadReport();
+                // 다운로드 실행 (await 추가)
+                try {
+                    await downloadReport();
+                } catch (error) {
+                    console.error('다운로드 오류:', error);
+                    alert('다운로드 중 오류가 발생했습니다. 다시 시도해주세요.');
+                }
             }, 2000);
         }
         
@@ -396,35 +401,39 @@
             }
             
             // 로컬 파일 다운로드 (Firebase Storage 미설정 또는 실패 시)
-            try {
-                const pdfUrl = 'files/1_음주운전.pdf';
-                
-                // fetch로 파일을 가져와서 Blob으로 변환 후 다운로드
-                const response = await fetch(pdfUrl);
-                if (!response.ok) {
-                    throw new Error('파일을 찾을 수 없습니다.');
+            const pdfUrl = 'files/1_음주운전.pdf';
+            console.log('다운로드 시작:', pdfUrl);
+            
+            // 직접 링크로 다운로드 (가장 안정적인 방법)
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = fileName;
+            link.style.display = 'none';
+            
+            // body에 추가
+            document.body.appendChild(link);
+            
+            // 클릭 이벤트 트리거
+            setTimeout(() => {
+                try {
+                    link.click();
+                    console.log('다운로드 링크 클릭됨');
+                } catch (clickError) {
+                    console.error('링크 클릭 오류:', clickError);
+                    // 새 창으로 열기 시도
+                    window.open(pdfUrl, '_blank');
                 }
                 
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
+                // 정리
+                setTimeout(() => {
+                    if (link.parentNode) {
+                        document.body.removeChild(link);
+                    }
+                }, 1000);
                 
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = fileName;
-                link.style.display = 'none';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // URL 해제
-                window.URL.revokeObjectURL(url);
-                
+                // 성공 메시지 표시
                 showDownloadSuccess();
-            } catch (error) {
-                console.error('다운로드 오류:', error);
-                alert('다운로드 중 오류가 발생했습니다. 파일이 존재하는지 확인해주세요.');
-            }
+            }, 100);
         }
         
         function showDownloadSuccess() {
