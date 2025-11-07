@@ -58,7 +58,7 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
+                <div class="logo" onclick="showCategory('home')" style="cursor: pointer;">
                     <h1 class="logo-text">SENSEMAKERS</h1>
                     <p class="logo-tagline">데이터로 인식을 만드는 사람들</p>
                 </div>
@@ -173,25 +173,24 @@
                 </section>
 
                 <!-- 인기 리포트 -->
-                <section class="featured-products">
+                <section class="popular-categories">
                     <h2 class="section-title">인기 리포트</h2>
-                    <div class="featured-grid">
-                        <div class="featured-item" onclick="window.location.href='report-download.html'">
-                            <div class="featured-badge">BEST</div>
-                            <div class="featured-image">
+                    <div class="category-grid">
+                        <div class="category-card" onclick="window.location.href='report-download.html'">
+                            <div class="category-icon">
                                 <i class="fas fa-file-alt"></i>
                             </div>
                             <h3>음주운전 심층분석 리포트</h3>
-                            <div class="featured-price">
-                                <span class="original">390,000원</span>
-                                <span class="sale">150,000원</span>
+                            <div class="category-price">
+                                <span class="original-price">390,000원</span>
+                                <span class="sale-price">150,000원</span>
                             </div>
                         </div>
-                        <div class="featured-item empty-featured">
+                        <div class="category-card empty-card">
                         </div>
-                        <div class="featured-item empty-featured">
+                        <div class="category-card empty-card">
                         </div>
-                        <div class="featured-item empty-featured">
+                        <div class="category-card empty-card">
                         </div>
                     </div>
                 </section>
