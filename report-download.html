@@ -344,24 +344,24 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = '결제 완료';
                 
-                // 결제 완료 팝업 먼저 표시 (모달 닫기 전에)
-                const userConfirmed = confirm('🎉 결제가 완료되었습니다!\n\n리포트 다운로드를 시작하시겠습니까?');
-                
                 // 결제 모달 닫기
                 paymentModal.classList.remove('active');
                 paymentForm.reset();
+                
+                // 결제 완료 팝업 표시
+                const userConfirmed = confirm('🎉 결제가 완료되었습니다!\n\n리포트 다운로드를 시작하시겠습니까?');
                 
                 // 확인 버튼 클릭 시 다운로드 실행
                 if (userConfirmed) {
                     console.log('사용자가 확인 버튼을 클릭했습니다. 다운로드 시작...');
                     
-                    // 즉시 다운로드 실행
-                    try {
-                        console.log('downloadReport 함수 호출 중...');
-                        
-                        // 다운로드 함수 직접 호출
-                        const fileName = '음주운전_심층분석_리포트.txt';
-                        const fileContent = `음주운전 심층분석 리포트
+                    // 다운로드 실행 함수
+                    function executeDownload() {
+                        try {
+                            console.log('다운로드 실행 중...');
+                            
+                            const fileName = '음주운전_심층분석_리포트.txt';
+                            const fileContent = `음주운전 심층분석 리포트
 
 이 리포트는 음주운전 관련 데이터를 심층 분석한 결과입니다.
 
@@ -377,41 +377,54 @@
 
 본 리포트는 결제 완료 후 다운로드 가능합니다.
 `;
-                        
-                        // Blob 생성
-                        const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-                        const url = window.URL.createObjectURL(blob);
-                        
-                        // 다운로드 링크 생성
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.download = fileName;
-                        link.style.display = 'none';
-                        
-                        // body에 추가
-                        document.body.appendChild(link);
-                        
-                        // 클릭 실행
-                        link.click();
-                        console.log('다운로드 링크 클릭됨:', fileName);
-                        
-                        // 성공 메시지 표시
-                        setTimeout(() => {
-                            showDownloadSuccess();
-                        }, 300);
-                        
-                        // 정리
-                        setTimeout(() => {
-                            if (link.parentNode) {
-                                document.body.removeChild(link);
-                            }
-                            window.URL.revokeObjectURL(url);
-                        }, 1000);
-                        
-                    } catch (error) {
-                        console.error('다운로드 함수 호출 오류:', error);
-                        alert('다운로드 중 오류가 발생했습니다.\n\n오류: ' + error.message);
+                            
+                            // Blob 생성
+                            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+                            const url = window.URL.createObjectURL(blob);
+                            
+                            // 다운로드 링크 생성
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = fileName;
+                            link.style.display = 'none';
+                            
+                            // body에 추가
+                            document.body.appendChild(link);
+                            
+                            // 클릭 실행 (requestAnimationFrame으로 브라우저 렌더링 후 실행)
+                            requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                    try {
+                                        link.click();
+                                        console.log('다운로드 링크 클릭됨:', fileName);
+                                        
+                                        // 성공 메시지 표시
+                                        setTimeout(() => {
+                                            showDownloadSuccess();
+                                        }, 300);
+                                        
+                                        // 정리
+                                        setTimeout(() => {
+                                            if (link.parentNode) {
+                                                document.body.removeChild(link);
+                                            }
+                                            window.URL.revokeObjectURL(url);
+                                        }, 1000);
+                                    } catch (clickError) {
+                                        console.error('링크 클릭 오류:', clickError);
+                                        alert('다운로드 중 오류가 발생했습니다.');
+                                    }
+                                });
+                            });
+                            
+                        } catch (error) {
+                            console.error('다운로드 함수 오류:', error);
+                            alert('다운로드 중 오류가 발생했습니다.\n\n오류: ' + error.message);
+                        }
                     }
+                    
+                    // 즉시 실행
+                    executeDownload();
                 } else {
                     console.log('사용자가 취소 버튼을 클릭했습니다.');
                 }
