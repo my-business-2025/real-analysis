@@ -104,22 +104,31 @@ async function saveUserToFirestore(user) {
 
 // 결제 시스템 초기화
 function initializePaymentSystem() {
+    // 시뮬레이션 모드 활성화 (테스트용)
+    window.PAYMENT_SIMULATION_MODE = true; // 실제 결제를 원하면 false로 변경하고 PortOne 코드 설정
+    
     // PortOne (아임포트) 초기화
     // ⚠️ 실제 사용을 위해서는 PortOne 콘솔에서 발급받은 가맹점 식별코드로 교체하세요
     // 테스트용: 'imp12345678' (실제 결제는 되지 않음)
     // 실제용: PortOne 콘솔(https://admin.portone.io)에서 발급받은 코드 입력
     const PORTONE_STORE_ID = 'imp12345678'; // ← 여기에 실제 가맹점 식별코드를 입력하세요
     
-    if (window.IMP) {
+    if (window.IMP && !window.PAYMENT_SIMULATION_MODE) {
         try {
             window.IMP.init(PORTONE_STORE_ID);
             console.log('✅ PortOne 결제 시스템이 초기화되었습니다.');
         } catch (error) {
             console.error('❌ PortOne 초기화 오류:', error);
-            alert('결제 시스템 초기화에 실패했습니다. 관리자에게 문의해주세요.');
+            console.log('⚠️ 시뮬레이션 모드로 전환합니다.');
+            window.PAYMENT_SIMULATION_MODE = true;
         }
     } else {
-        console.warn('⚠️ PortOne SDK가 로드되지 않았습니다. 결제 기능을 사용할 수 없습니다.');
+        if (window.PAYMENT_SIMULATION_MODE) {
+            console.log('🎮 결제 시뮬레이션 모드가 활성화되었습니다. (실제 결제는 되지 않습니다)');
+        } else {
+            console.warn('⚠️ PortOne SDK가 로드되지 않았습니다. 시뮬레이션 모드로 전환합니다.');
+            window.PAYMENT_SIMULATION_MODE = true;
+        }
     }
 }
 
@@ -485,6 +494,13 @@ function processPayment() {
     const total = cart.reduce((sum, item) => sum + item.price, 0);
     const orderId = generateOrderId();
     
+    // 시뮬레이션 모드 체크
+    if (window.PAYMENT_SIMULATION_MODE) {
+        // 시뮬레이션 결제 처리
+        simulatePayment(orderId, buyerName, buyerEmail, buyerPhone, paymentMethod, total);
+        return;
+    }
+    
     // 실제 카드 결제 진행
     if (paymentMethod === 'card' && window.IMP) {
         // PortOne 실제 카드 결제
@@ -542,6 +558,32 @@ function processPayment() {
     }
 }
 
+// 시뮬레이션 결제 처리
+function simulatePayment(orderId, buyerName, buyerEmail, buyerPhone, paymentMethod, total) {
+    // 결제 버튼 비활성화
+    const submitBtn = document.querySelector('.payment-submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '결제 처리 중...';
+    
+    // 시뮬레이션: 2초 후 결제 성공 처리
+    setTimeout(() => {
+        // 시뮬레이션 응답 생성
+        const simulatedResponse = {
+            success: true,
+            imp_uid: 'imp_sim_' + Date.now(), // 시뮬레이션 거래번호
+            merchant_uid: orderId,
+            paid_amount: total,
+            status: 'paid',
+            pay_method: paymentMethod === 'card' ? 'card' : paymentMethod,
+            pg_provider: 'simulation',
+            pg_tid: 'sim_' + Date.now()
+        };
+        
+        // 결제 성공 처리
+        processPaymentSuccess(simulatedResponse, orderId, buyerName, buyerEmail, buyerPhone, total);
+    }, 2000);
+}
+
 // 결제 성공 처리
 async function processPaymentSuccess(response, orderId, buyerName, buyerEmail, buyerPhone, total) {
     try {
@@ -575,7 +617,8 @@ async function processPaymentSuccess(response, orderId, buyerName, buyerEmail, b
         localStorage.setItem('orders', JSON.stringify(orders));
         
         // 성공 알림
-        alert(`🎉 결제가 완료되었습니다!\n\n주문번호: ${orderId}\n거래번호: ${response.imp_uid}\n주문자: ${buyerName}\n결제금액: ${formatPrice(total)}\n\n리포트 다운로드 페이지로 이동합니다.`);
+        const simulationNotice = window.PAYMENT_SIMULATION_MODE ? '\n\n⚠️ 시뮬레이션 모드: 실제 결제는 되지 않았습니다.' : '';
+        alert(`🎉 결제가 완료되었습니다!${simulationNotice}\n\n주문번호: ${orderId}\n거래번호: ${response.imp_uid}\n주문자: ${buyerName}\n결제금액: ${formatPrice(total)}\n\n리포트 다운로드 페이지로 이동합니다.`);
         
         // 장바구니 비우기 및 UI 리셋
         cart = [];
@@ -585,7 +628,10 @@ async function processPaymentSuccess(response, orderId, buyerName, buyerEmail, b
         paymentForm.reset();
         resetPaymentButton();
         
-        showSuccessMessage('실제 결제가 완료되었습니다! 📧 주문 확인 메일을 발송했습니다.');
+        const successMsg = window.PAYMENT_SIMULATION_MODE 
+            ? '시뮬레이션 결제가 완료되었습니다! (실제 결제는 되지 않았습니다)' 
+            : '실제 결제가 완료되었습니다! 📧 주문 확인 메일을 발송했습니다.';
+        showSuccessMessage(successMsg);
         
         // 다운로드 페이지로 이동 (바로 구매하기로 결제한 경우)
         if (window.pendingDownloadUrl) {
