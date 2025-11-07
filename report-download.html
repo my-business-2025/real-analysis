@@ -442,74 +442,35 @@
                 console.log('다운로드 시작:', fileName);
                 
                 try {
-                    // 빈 PDF 파일 생성 (간단한 PDF 구조)
-                    const pdfContent = `%PDF-1.4
-1 0 obj
-<<
-/Type /Catalog
-/Pages 2 0 R
->>
-endobj
-2 0 obj
-<<
-/Type /Pages
-/Kids [3 0 R]
-/Count 1
->>
-endobj
-3 0 obj
-<<
-/Type /Page
-/Parent 2 0 R
-/MediaBox [0 0 612 792]
-/Contents 4 0 R
-/Resources <<
-/Font <<
-/F1 <<
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
->>
->>
->>
-endobj
-4 0 obj
-<<
-/Length 44
->>
-stream
-BT
-/F1 12 Tf
-100 700 Td
-(음주운전 심층분석 리포트) Tj
-ET
-endstream
-endobj
-xref
-0 5
-0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000306 00000 n 
-trailer
-<<
-/Size 5
-/Root 1 0 R
->>
-startxref
-390
-%%EOF`;
+                    // 간단한 텍스트 파일 생성 (테스트용)
+                    const fileContent = `음주운전 심층분석 리포트
+
+이 리포트는 음주운전 관련 데이터를 심층 분석한 결과입니다.
+
+분석 일자: ${new Date().toLocaleDateString('ko-KR')}
+분석 기관: SENSEMAKERS
+
+주요 내용:
+- 음주운전 통계 데이터 분석
+- 음주운전 발생 원인 분석
+- 지역별/연령대별 상세 분석
+- 음주운전 예방 방안 제시
+- 정책 개선 제안
+
+본 리포트는 결제 완료 후 다운로드 가능합니다.
+`;
                     
-                    // Blob 생성
-                    const blob = new Blob([pdfContent], { type: 'application/pdf' });
+                    // Blob 생성 (텍스트 파일)
+                    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
                     const url = window.URL.createObjectURL(blob);
+                    
+                    // 파일명을 .txt로 변경
+                    const txtFileName = fileName.replace('.pdf', '.txt');
                     
                     // 다운로드 링크 생성
                     const link = document.createElement('a');
                     link.href = url;
-                    link.download = fileName;
+                    link.download = txtFileName;
                     link.style.display = 'none';
                     
                     // body에 추가
@@ -517,7 +478,7 @@ startxref
                     
                     // 클릭 실행
                     link.click();
-                    console.log('다운로드 링크 클릭됨');
+                    console.log('다운로드 링크 클릭됨:', txtFileName);
                     
                     // 다운로드 시작 후 성공 메시지 표시
                     setTimeout(() => {
