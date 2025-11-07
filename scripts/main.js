@@ -635,7 +635,9 @@ async function processPaymentSuccess(response, orderId, buyerName, buyerEmail, b
         
         // 다운로드 페이지로 이동 (바로 구매하기로 결제한 경우)
         if (window.pendingDownloadUrl) {
-            window.location.href = window.pendingDownloadUrl;
+            // 결제 완료 플래그와 함께 다운로드 페이지로 이동
+            const separator = window.pendingDownloadUrl.includes('?') ? '&' : '?';
+            window.location.href = window.pendingDownloadUrl + separator + 'paid=true';
             window.pendingDownloadUrl = null; // 초기화
         } else {
             showCategory('home');
@@ -690,7 +692,9 @@ function processAlternativePayment(orderId, buyerName, buyerEmail, buyerPhone, p
     
     // 다운로드 페이지로 이동 (바로 구매하기로 결제한 경우)
     if (window.pendingDownloadUrl) {
-        window.location.href = window.pendingDownloadUrl;
+        // 결제 완료 플래그와 함께 다운로드 페이지로 이동
+        const separator = window.pendingDownloadUrl.includes('?') ? '&' : '?';
+        window.location.href = window.pendingDownloadUrl + separator + 'paid=true';
         window.pendingDownloadUrl = null; // 초기화
     } else {
         showCategory('home');

@@ -198,13 +198,88 @@
     </main>
 
     <script>
-        function downloadReport() {
-            // 실제 다운로드 로직 (결제 후 다운로드 가능하도록 구현)
-            if (confirm('리포트를 다운로드하시겠습니까?\n\n결제가 완료된 후 다운로드가 가능합니다.')) {
-                // 결제 모달 표시 또는 다운로드 진행
-                alert('결제 페이지로 이동합니다.');
-                // 실제로는 결제 프로세스로 이동
+        // 페이지 로드 시 결제 완료 여부 확인
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isPaid = urlParams.get('paid') === 'true';
+            
+            if (isPaid) {
+                // 결제 완료 후 자동 다운로드
+                setTimeout(() => {
+                    downloadReport();
+                }, 1000); // 1초 후 자동 다운로드
             }
+        });
+        
+        function downloadReport() {
+            // PDF 파일 다운로드
+            const pdfUrl = 'files/1_음주운전.pdf';
+            const fileName = '음주운전_심층분석_리포트.pdf';
+            
+            // 다운로드 링크 생성
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = fileName;
+            link.style.display = 'none';
+            
+            // 다운로드 실행
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 다운로드 완료 메시지
+            showDownloadSuccess();
+        }
+        
+        function showDownloadSuccess() {
+            // 성공 메시지 표시
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+                color: white;
+                padding: 20px 30px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+                z-index: 10000;
+                font-weight: 600;
+                font-size: 1.1rem;
+                animation: slideInRight 0.3s ease;
+            `;
+            message.innerHTML = '<i class="fas fa-check-circle"></i> 리포트 다운로드가 시작되었습니다!';
+            
+            // 애니메이션 스타일 추가
+            if (!document.querySelector('#download-animation-style')) {
+                const style = document.createElement('style');
+                style.id = 'download-animation-style';
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from {
+                            transform: translateX(100%);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(message);
+            
+            // 3초 후 자동 제거
+            setTimeout(() => {
+                message.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.remove();
+                    }
+                }, 300);
+            }, 3000);
         }
     </script>
 </body>
