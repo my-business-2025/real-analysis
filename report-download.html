@@ -399,7 +399,11 @@
                         link.click();
                         document.body.removeChild(link);
                         
-                        showDownloadSuccess();
+                        // 다운로드 시작 후 성공 메시지 표시 (약간의 지연)
+                        setTimeout(() => {
+                            showDownloadSuccess();
+                        }, 500);
+                        
                         resolve();
                     } catch (error) {
                         console.warn('Firebase Storage 다운로드 실패, 로컬 파일로 시도:', error);
@@ -434,14 +438,15 @@
                         link.click();
                         console.log('다운로드 링크 클릭됨');
                         
-                        // 성공 메시지 표시
-                        showDownloadSuccess();
-                        
                         // 정리
                         setTimeout(() => {
                             if (link.parentNode) {
                                 document.body.removeChild(link);
                             }
+                            // 다운로드 시작 후 성공 메시지 표시 (약간의 지연)
+                            setTimeout(() => {
+                                showDownloadSuccess();
+                            }, 500);
                         }, 1000);
                         
                         resolve();
@@ -450,7 +455,9 @@
                         // 새 창으로 열기 시도
                         try {
                             window.open(pdfUrl, '_blank');
-                            showDownloadSuccess();
+                            setTimeout(() => {
+                                showDownloadSuccess();
+                            }, 500);
                             resolve();
                         } catch (openError) {
                             console.error('새 창 열기 오류:', openError);
