@@ -15,7 +15,7 @@
     <meta name="theme-color" content="#3498db">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzM0OThkYiIvPgo8cGF0aCBkPSJNOCAxMkwxNiA4TDI0IDEyTDE2IDE2TDggMTJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNOCAxOEwxNiAxNEwyNCAxOEwxNiAyMkw4IDE4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==">
     <link rel="stylesheet" href="styles/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&family=Playfair+Display:wght@400;600;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css">
     
@@ -130,20 +130,6 @@
                 <div class="home-hero">
                     <div class="hero-content">
                         <h1 class="hero-title">감각적인 데이터 분석으로<br>세상이 다르게 보입니다</h1>
-                        <div class="hero-stats">
-                            <div class="stat-item">
-                                <div class="stat-number">1,000+</div>
-                                <div class="stat-label">수강생</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number">50+</div>
-                                <div class="stat-label">기업 파트너</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number">95%</div>
-                                <div class="stat-label">만족도</div>
-                            </div>
-                        </div>
                         <div class="hero-actions">
                             <button class="cta-btn primary" onclick="showCategory('books')">분석 리포트 보기</button>
                             <button class="cta-btn secondary" onclick="showCategory('services')">문의하기</button>
@@ -186,39 +172,26 @@
                     </div>
                 </section>
 
-                <!-- 추천 상품 -->
+                <!-- 인기 리포트 -->
                 <section class="featured-products">
-                    <h2 class="section-title">이달의 추천</h2>
+                    <h2 class="section-title">인기 리포트</h2>
                     <div class="featured-grid">
-                        <div class="featured-item">
+                        <div class="featured-item" onclick="window.location.href='report-download.html'">
                             <div class="featured-badge">BEST</div>
                             <div class="featured-image">
-                                <i class="fas fa-brain"></i>
+                                <i class="fas fa-file-alt"></i>
                             </div>
-                            <h3>머신러닝 마스터 클래스</h3>
-                            <p>실무 케이스로 배우는 AI/ML</p>
+                            <h3>음주운전 심층분석 리포트</h3>
                             <div class="featured-price">
-                                <span class="original">300,000원</span>
-                                <span class="sale">250,000원</span>
+                                <span class="original">390,000원</span>
+                                <span class="sale">150,000원</span>
                             </div>
                         </div>
-                        <div class="featured-item">
-                            <div class="featured-badge">NEW</div>
-                            <div class="featured-image">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <h3>실시간 데이터 분석</h3>
-                            <p>비즈니스 인사이트 도출</p>
-                            <div class="featured-price">500,000원</div>
+                        <div class="featured-item empty-featured">
                         </div>
-                        <div class="featured-item">
-                            <div class="featured-badge">HOT</div>
-                            <div class="featured-image">
-                                <i class="fas fa-database"></i>
-                            </div>
-                            <h3>빅데이터 파이프라인</h3>
-                            <p>대규모 데이터 처리 시스템</p>
-                            <div class="featured-price">180,000원</div>
+                        <div class="featured-item empty-featured">
+                        </div>
+                        <div class="featured-item empty-featured">
                         </div>
                     </div>
                 </section>
@@ -456,3 +429,4 @@
     <script src="scripts/main.js"></script>
 </body>
 </html>
+
