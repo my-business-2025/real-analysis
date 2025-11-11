@@ -1228,15 +1228,11 @@ body {
 }
 
 .process-row > .process-step {
-    grid-column: span 2;
-}
-
-.process-row > .process-step:last-child {
-    grid-column: span 2;
+    grid-column: span 1;
 }
 
 .process-row > .step-arrow-horizontal {
-    grid-column: span 2;
+    grid-column: span 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1355,6 +1351,7 @@ body {
     word-break: keep-all;
     overflow-wrap: break-word;
     flex: 1;
+    text-align: center;
 }
 
 .step-expertise strong {
