@@ -1222,13 +1222,13 @@ body {
 
 .process-row {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(15, 1fr);
     gap: 8px;
     width: 100%;
 }
 
 .process-row > .process-step {
-    grid-column: span 1;
+    grid-column: span 3;
 }
 
 .process-row > .step-arrow-horizontal {
@@ -1236,6 +1236,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* 두 번째 줄의 마지막 단계는 남은 공간 차지 */
+.process-row:last-child > .process-step:last-child {
+    grid-column: span 4;
 }
 
 .process-step {
