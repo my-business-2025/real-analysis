@@ -1143,7 +1143,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
     margin-bottom: 20px;
 }
 
@@ -1217,7 +1216,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 8px;
     max-width: 66.67%;
     margin: 0 auto;
 }
@@ -1227,7 +1226,7 @@ body {
     align-items: center;
     gap: 25px;
     background: white;
-    padding: 25px 30px;
+    padding: 15px 30px;
     border-radius: 15px;
     box-shadow: 0 3px 15px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
@@ -1286,7 +1285,7 @@ body {
     text-align: center;
     color: #3498db;
     font-size: 1.5rem;
-    margin: 5px 0;
+    margin: 2px 0;
     line-height: 1;
     width: 100%;
     max-width: 66.67%;
