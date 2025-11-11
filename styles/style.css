@@ -1230,7 +1230,6 @@ body {
 .process-step {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
     background: white;
     padding: 15px;
     border-radius: 15px;
@@ -1248,13 +1247,14 @@ body {
 
 .step-arrow-horizontal {
     color: #3498db;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 3px;
+    padding: 0 5px;
+    letter-spacing: -2px;
 }
 
 .step-number {
@@ -1277,6 +1277,7 @@ body {
     flex-direction: column;
     gap: 8px;
     min-width: 0;
+    width: 100%;
 }
 
 .step-title {
