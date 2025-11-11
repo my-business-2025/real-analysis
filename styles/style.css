@@ -1263,6 +1263,9 @@ body {
 .process-step[data-step="10"] { background: #0D47A1; }
 
 /* 진한 파란색일 때 글자색을 흰색으로 */
+.process-step[data-step="6"] .step-title,
+.process-step[data-step="6"] .step-expertise,
+.process-step[data-step="6"] .step-expertise strong,
 .process-step[data-step="7"] .step-title,
 .process-step[data-step="7"] .step-expertise,
 .process-step[data-step="7"] .step-expertise strong,
@@ -1294,6 +1297,7 @@ body {
     padding: 0 5px;
     letter-spacing: -2px;
     align-self: center;
+    margin-top: -20px;
 }
 
 .step-arrow-vertical {
