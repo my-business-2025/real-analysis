@@ -1213,11 +1213,18 @@ body {
 }
 
 .process-steps {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.process-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
 }
 
 .process-step {
@@ -1229,11 +1236,24 @@ body {
     border-radius: 15px;
     box-shadow: 0 3px 15px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
+    flex: 1;
+    min-width: 0;
 }
 
 .process-step:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+.step-arrow-horizontal {
+    color: #3498db;
+    font-size: 2rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
 }
 
 .step-number {
@@ -1279,21 +1299,31 @@ body {
 
 /* 반응형 디자인 */
 @media (max-width: 1200px) {
-    .process-steps {
-        grid-template-columns: repeat(3, 1fr);
+    .process-row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .process-step {
+        flex: 0 1 calc(33.333% - 10px);
+        min-width: 200px;
+    }
+    
+    .step-arrow-horizontal {
+        display: none;
     }
 }
 
 @media (max-width: 768px) {
-    .process-steps {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
+    .process-step {
+        flex: 0 1 calc(50% - 10px);
+        min-width: 180px;
     }
 }
 
 @media (max-width: 480px) {
-    .process-steps {
-        grid-template-columns: 1fr;
+    .process-step {
+        flex: 1 1 100%;
     }
 }
 
