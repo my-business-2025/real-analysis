@@ -1221,10 +1221,25 @@ body {
 }
 
 .process-row {
-    display: flex;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
     gap: 8px;
     width: 100%;
+}
+
+.process-row > .process-step {
+    grid-column: span 2;
+}
+
+.process-row > .process-step:last-child {
+    grid-column: span 2;
+}
+
+.process-row > .step-arrow-horizontal {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .process-step {
@@ -1234,9 +1249,7 @@ body {
     border-radius: 15px;
     box-shadow: 0 3px 15px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
-    flex: 1;
-    min-width: 0;
-    max-width: calc((100% - 32px) / 5);
+    width: 100%;
     height: 100%;
     border: 2px solid #3498db;
 }
@@ -1298,13 +1311,6 @@ body {
     padding: 0 5px;
 }
 
-.process-row-connector {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 10px 0;
-}
 
 .step-number {
     width: 35px;
