@@ -1113,7 +1113,7 @@ body {
 
 /* 분석 카테고리 섹션 */
 .analysis-categories {
-    margin: 80px 0;
+    margin: 40px 0 80px 0;
 }
 
 .category-list {
@@ -1230,7 +1230,6 @@ body {
 .process-step {
     display: flex;
     align-items: flex-start;
-    background: white;
     padding: 15px;
     border-radius: 15px;
     box-shadow: 0 3px 15px rgba(0,0,0,0.08);
@@ -1239,20 +1238,36 @@ body {
     min-width: 0;
     max-width: calc((100% - 32px) / 5);
     height: 100%;
-    border: 2px solid #E3F2FD;
+    border: 2px solid #3498db;
 }
 
-/* 단계별 테두리 색상 그라데이션 */
-.process-step[data-step="1"] { border-color: #E3F2FD; }
-.process-step[data-step="2"] { border-color: #BBDEFB; }
-.process-step[data-step="3"] { border-color: #90CAF9; }
-.process-step[data-step="4"] { border-color: #64B5F6; }
-.process-step[data-step="5"] { border-color: #42A5F5; }
-.process-step[data-step="6"] { border-color: #2196F3; }
-.process-step[data-step="7"] { border-color: #1E88E5; }
-.process-step[data-step="8"] { border-color: #1976D2; }
-.process-step[data-step="9"] { border-color: #1565C0; }
-.process-step[data-step="10"] { border-color: #0D47A1; }
+/* 단계별 배경색 그라데이션 */
+.process-step[data-step="1"] { background: #E3F2FD; }
+.process-step[data-step="2"] { background: #BBDEFB; }
+.process-step[data-step="3"] { background: #90CAF9; }
+.process-step[data-step="4"] { background: #64B5F6; }
+.process-step[data-step="5"] { background: #42A5F5; }
+.process-step[data-step="6"] { background: #2196F3; }
+.process-step[data-step="7"] { background: #1E88E5; }
+.process-step[data-step="8"] { background: #1976D2; }
+.process-step[data-step="9"] { background: #1565C0; }
+.process-step[data-step="10"] { background: #0D47A1; }
+
+/* 진한 파란색일 때 글자색을 흰색으로 */
+.process-step[data-step="7"] .step-title,
+.process-step[data-step="7"] .step-expertise,
+.process-step[data-step="7"] .step-expertise strong,
+.process-step[data-step="8"] .step-title,
+.process-step[data-step="8"] .step-expertise,
+.process-step[data-step="8"] .step-expertise strong,
+.process-step[data-step="9"] .step-title,
+.process-step[data-step="9"] .step-expertise,
+.process-step[data-step="9"] .step-expertise strong,
+.process-step[data-step="10"] .step-title,
+.process-step[data-step="10"] .step-expertise,
+.process-step[data-step="10"] .step-expertise strong {
+    color: white;
+}
 
 .process-step:hover {
     transform: translateY(-5px);
@@ -1260,7 +1275,7 @@ body {
 }
 
 .step-arrow-horizontal {
-    color: #E3F2FD;
+    color: #3498db;
     font-size: 1.8rem;
     font-weight: bold;
     flex-shrink: 0;
@@ -1269,19 +1284,22 @@ body {
     justify-content: center;
     padding: 0 5px;
     letter-spacing: -2px;
+    align-self: center;
 }
 
-/* 단계별 화살표 색상 그라데이션 */
-.step-arrow-horizontal[data-step="1"] { color: #E3F2FD; }
-.step-arrow-horizontal[data-step="2"] { color: #BBDEFB; }
-.step-arrow-horizontal[data-step="3"] { color: #90CAF9; }
-.step-arrow-horizontal[data-step="4"] { color: #64B5F6; }
-.step-arrow-horizontal[data-step="5"] { color: #42A5F5; }
-.step-arrow-horizontal[data-step="6"] { color: #2196F3; }
-.step-arrow-horizontal[data-step="7"] { color: #1E88E5; }
-.step-arrow-horizontal[data-step="8"] { color: #1976D2; }
-.step-arrow-horizontal[data-step="9"] { color: #1565C0; }
-.step-arrow-horizontal[data-step="10"] { color: #0D47A1; }
+.step-arrow-vertical {
+    color: #3498db;
+    font-size: 1.8rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    align-self: center;
+    width: calc((100% - 32px) / 5);
+    max-width: calc((100% - 32px) / 5);
+}
 
 .step-number {
     width: 35px;
