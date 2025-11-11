@@ -1222,13 +1222,13 @@ body {
 
 .process-row {
     display: grid;
-    grid-template-columns: repeat(15, 1fr);
+    grid-template-columns: repeat(25, 1fr);
     gap: 8px;
     width: 100%;
 }
 
 .process-row > .process-step {
-    grid-column: span 3;
+    grid-column: span 4;
 }
 
 .process-row > .step-arrow-horizontal {
@@ -1240,18 +1240,18 @@ body {
 
 /* 두 번째 줄의 마지막 단계는 남은 공간 차지 */
 .process-row:last-child > .process-step:last-child {
-    grid-column: span 4;
+    grid-column: span 5;
 }
 
 .process-step {
     display: flex;
     align-items: flex-start;
-    padding: 15px;
+    padding: 20px 25px;
     border-radius: 15px;
     box-shadow: 0 3px 15px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
     width: 100%;
-    height: 100%;
+    min-height: 120px;
     border: 2px solid #3498db;
 }
 
