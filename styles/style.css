@@ -20,7 +20,7 @@ body {
 
 /* 헤더 스타일 */
 .header {
-    background: linear-gradient(135deg, #2c3e50 0%, #3b4d61 100%);
+    background: linear-gradient(to right, #2c3e50 0%, #3b4d61 50%, #4a5f7a 100%);
     color: white;
     padding: 30px 0;
     text-align: center;
@@ -974,13 +974,44 @@ body {
     padding-top: 0;
 }
 
+.hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #E3F2FD;
+    color: #1976D2;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.hero-tag i {
+    font-size: 0.8rem;
+}
+
 .hero-title {
-    font-size: 2.8rem;
+    font-size: 3.5rem;
     font-weight: 700;
-    line-height: 1.3;
-    color: #2c3e50;
+    line-height: 1.4;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hero-title-line {
+    display: block;
+}
+
+.hero-title-gray {
+    color: #333;
+}
+
+.hero-title-blue {
+    color: #3498db;
 }
 
 .hero-title .highlight {
@@ -1046,9 +1077,16 @@ body {
 }
 
 .cta-btn.secondary {
-    background: transparent;
+    background: white;
     color: #3498db;
     border: 2px solid #3498db;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cta-btn.secondary i {
+    font-size: 0.9rem;
 }
 
 .cta-btn.secondary:hover {
@@ -1060,27 +1098,40 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.brand-story-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 500px;
 }
 
 .brand-story {
-    color: #2c3e50;
-    line-height: 1.3;
-    font-size: 1.6rem;
-    font-family: 'Noto Serif KR', serif;
+    color: #333;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    font-family: 'Noto Sans KR', sans-serif;
     font-weight: 400;
-    padding-top: 0;
+    margin-bottom: 20px;
 }
 
 .brand-story p {
-    margin-bottom: 2px;
+    margin-bottom: 8px;
     font-weight: 400;
+    color: #555;
 }
 
 .brand-story-end {
-    margin-top: 8px;
-    font-weight: 700;
+    margin-top: 20px;
+    font-weight: 600;
     color: #3498db;
+    font-size: 1.1rem;
+    line-height: 1.6;
 }
 
 .chart-animation {
@@ -1595,7 +1646,25 @@ body {
     }
     
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+    }
+    
+    .hero-tag {
+        font-size: 0.85rem;
+        padding: 6px 14px;
+        margin-bottom: 20px;
+    }
+    
+    .brand-story-card {
+        padding: 30px 20px;
+    }
+    
+    .brand-story {
+        font-size: 1rem;
+    }
+    
+    .brand-story-end {
+        font-size: 1rem;
     }
     
     .hero-subtitle {
