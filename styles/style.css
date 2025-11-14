@@ -65,7 +65,7 @@ body {
 }
 
 .logo p {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 300;
     opacity: 0.9;
 }
@@ -987,7 +987,7 @@ body {
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: 3.25rem;
     font-weight: 700;
     line-height: 1.4;
     margin-top: 0;
@@ -1110,8 +1110,8 @@ body {
 .brand-story {
     color: #333;
     line-height: 1.8;
-    font-size: 1.1rem;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.25rem;
+    font-family: 'Nanum Pen Script', cursive;
     font-weight: 400;
     margin-bottom: 20px;
 }
@@ -1126,8 +1126,9 @@ body {
     margin-top: 20px;
     font-weight: 600;
     color: #3498db;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     line-height: 1.6;
+    font-family: 'Nanum Pen Script', cursive;
 }
 
 .chart-animation {
@@ -1656,11 +1657,11 @@ body {
     }
     
     .brand-story {
-        font-size: 1rem;
+        font-size: 1.15rem;
     }
     
     .brand-story-end {
-        font-size: 1rem;
+        font-size: 1.15rem;
     }
     
     .hero-subtitle {
